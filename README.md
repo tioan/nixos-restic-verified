@@ -203,7 +203,7 @@ The exporter calls restic with `--no-lock` throughout, `restic check` included. 
 
 ### `services.resticS3` (nix-darwin)
 
-`endpoint`, `region`, `textfileDir`, `metricPrefix`, `passwordFile`, `keyIdFile`, `secretKeyFile` (one set per host), and `jobs.<name>.{bucket, paths, hour, minute, keepDaily, keepWeekly, keepMonthly, maxAgeHours, minPercent, checkSubset, keepUnverifiedDays}`. Paths must not contain spaces. With `restic-s3-sops`: `sopsFile` and `secretNames.{password,keyId,secretKey}` (defaults `restic_password`, `restic_key_id`, `restic_secret_key`).
+`endpoint`, `region`, `textfileDir`, `metricPrefix`, `passwordFile`, `keyIdFile`, `secretKeyFile` (one set per host), and `jobs.<name>.{bucket, paths, hour, minute, keepDaily, keepWeekly, keepMonthly, maxAgeHours, minPercent, checkSubset, keepUnverifiedDays}`; prune grouped by host only, as on NixOS. Paths must not contain spaces. With `restic-s3-sops`: `sopsFile` and `secretNames.{password,keyId,secretKey}` (defaults `restic_password`, `restic_key_id`, `restic_secret_key`).
 
 ## Metrics
 
@@ -244,6 +244,7 @@ Take the snapshot ID from `<prefix>backup_verified_snapshot_info` rather than `l
 nix build .#checks.x86_64-linux.restic-verified            # forced failures, keep-slot series, retry
 nix build .#checks.x86_64-linux.restic-exporter-readonly   # exporter on a read-only key against Garage
 nix build .#checks.aarch64-darwin.restic-verified-darwin   # the script as nix-darwin runs it
+nix build .#checks.aarch64-darwin.prune-args               # forget arguments, grouped by host on both systems
 ```
 
 ## Prior art

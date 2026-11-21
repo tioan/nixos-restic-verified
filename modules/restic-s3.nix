@@ -59,16 +59,8 @@ let
         RandomizedDelaySec = job.randomizedDelay;
         Persistent = true;
       };
-      # One group per host, not per host and path list (restic's default):
-      # each job has a repository of its own, and a changed path list would
-      # otherwise start a new group and leave the old one's snapshots in
-      # place for good, since nothing new joins it.
-      pruneOpts = [
-        "--group-by host"
-        "--keep-daily ${toString job.keepDaily}"
-        "--keep-weekly ${toString job.keepWeekly}"
-        "--keep-monthly ${toString job.keepMonthly}"
-      ];
+      # Grouped by host only, as on nix-darwin.
+      pruneOpts = import ./restic-prune-args.nix job;
     }
     // lib.optionalAttrs ((steps job).prepare != null) { backupPrepareCommand = (steps job).prepare; }
     // lib.optionalAttrs ((steps job).cleanup != null) { backupCleanupCommand = (steps job).cleanup; };

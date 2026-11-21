@@ -21,9 +21,6 @@
   # One argument per line, split on whitespace by the script: the paths
   # must not contain spaces (asserted in the module).
   backupArgs = job.paths;
-  pruneArgs = [
-    "--keep-daily ${toString job.keepDaily}"
-    "--keep-weekly ${toString job.keepWeekly}"
-    "--keep-monthly ${toString job.keepMonthly}"
-  ];
+  # Grouped by host only, as on NixOS.
+  pruneArgs = import ../restic-prune-args.nix job;
 }

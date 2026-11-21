@@ -34,6 +34,8 @@
         forSystems [ "x86_64-linux" "aarch64-darwin" ] (pkgs: {
           # The script as nix-darwin runs it, against a local repository.
           restic-verified-darwin = import ./tests/restic-verified-darwin.nix { inherit pkgs; };
+          # The forget arguments, grouped by host on both systems.
+          prune-args = import ./tests/prune-args.nix { inherit pkgs; };
         })
         // {
           x86_64-linux =
@@ -42,6 +44,7 @@
             in
             {
               restic-verified-darwin = import ./tests/restic-verified-darwin.nix { inherit pkgs; };
+              prune-args = import ./tests/prune-args.nix { inherit pkgs; };
               # NixOS VM tests: forced failures, and the exporter's read-only key against Garage.
               restic-verified = import ./tests/restic-verified.nix { inherit pkgs; };
               restic-exporter-readonly = import ./tests/restic-exporter-readonly.nix { inherit pkgs; };
